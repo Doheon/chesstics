@@ -204,7 +204,6 @@ function updateBoard(){
 
                 if (cell.state == "move") cell.element.style.color = "rgb(36, 67, 169)";
                 else if (cell.state == "take") cell.element.style.color = "rgb(191, 39, 22)";
-
                 if(cell.rate == "n"){
                     cell.element.innerHTML = "no data";
                     cell.element.style.fontSize = "medium"

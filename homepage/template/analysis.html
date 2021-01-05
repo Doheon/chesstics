@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Chess Statistics</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+        <script type = "text/javascript" src ="{% static 'js/jquery.js' %}"></script>
+    </head>
+
+    
+
+    <body>
+        <div class = "header">
+            <div class = "home">
+                <a href="/" class = "home">Chesstics</a>   
+            </div>
+
+            <div class = "analysis">
+                <a href="/analysis">Analysis</a>
+            </div>
+            
+            <div class = "addData">
+                <a href="/add">Add Data</a>
+            </div>
+        </div>
+
+        <form  method = "POST" class="justify-content-center row mt-4 mb-2">{% csrf_token%}
+            <div class="col-sm-9">
+                <input type="text" name = "notation" class="form-control" placeholder="ex)d4 d5">
+            </div>
+            <div class="col-auto">
+                <button type = "submit" class="btn btn-dark mb-3">Search</button>
+            </div>
+        </form>
+
+        <div style = "width: 500px; margin:auto; margin-top: 100px;">
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                <a class="nav-link active" href="#">Active</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                <a class="nav-link" href="#">Disabled</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Disabled</a>
+                </li>
+            </ul>
+            asdf
+            
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Chess Statistics</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+        <script type = "text/javascript" src ="{% static 'js/jquery.js' %}"></script>
+    </head>
+
+    
+
+    <body onload = "makeBoard()">
+        <div class = "header">
+            <div class = "home">
+                <a href="/" class = "home">Chesstics</a>   
+            </div>
+
+            <div class = "analysis">
+                <a href="/analysis">Analysis</a>
+            </div>
+            
+            <div class = "addData">
+                <a href="/add">Add Data</a>
+            </div>
+        </div>
+
+        <form  method = "POST" class="justify-content-center row mt-4 mb-2">{% csrf_token%}
+            <div class="col-sm-9">
+                <input type="text" name = "notation" class="form-control" placeholder="ex)d4 d5">
+            </div>
+            <div class="col-auto">
+                <button type = "submit" class="btn btn-dark mb-3">Search</button>
+            </div>
+        </form>
+
+        <div style = "width: 400px; margin:auto; margin-top: 100px; text-align: right;">
+            <form  method = "POST" class="justify-content-center row mb-2">{% csrf_token%}
+                    <div style = "width: 100px;"">Winner:</div> 
+                    <select name="winner" id = "winner" style="width: 300px;">
+                        <option value="white">White</option>
+                        <option value="black">Black</option>
+                    </select>
+
+                    <div style = "width: 100px;margin-top: 10px;">Notation:</div> 
+                    <input type="text" name = "addData" style="width: 300px;margin-top: 10px;">
+
+                    <button type = "submit" class="btn btn-dark mb-3" style="width: 100px; margin-top: 10px;" onclick="alert('Data Saved!')">Add</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+    </body>
+</html>

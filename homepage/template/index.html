@@ -1,0 +1,226 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Chess Statistics</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+        <script type = "text/javascript" src ="{% static 'js/jquery.js' %}"></script>
+    </head>
+
+    
+
+    <body onload = "makeBoard()">
+        <div class = "header">
+            <div class = "home">
+                <a href="/" class = "home">Chesstics</a>   
+            </div>
+
+            <div class = "analysis">
+                <a href="/analysis">Analysis</a>
+            </div>
+            
+            <div class = "addData">
+                <a href="/add">Add Data</a>
+            </div>
+        </div>
+
+        <form  method = "POST" class="justify-content-center row mt-4 mb-2">{% csrf_token%}
+            <div class="col-sm-9">
+                <input type="text" name = "notation" class="form-control" placeholder="ex)d4 d5">
+            </div>
+            <div class="col-auto">
+                <button type = "submit" class="btn btn-dark mb-3">Search</button>
+            </div>
+        </form>
+
+        <div class = "current" style = "font-weight: bold">
+        Notation: <br>
+        Cases: {{allCount}} / {{allCount}}
+        </div>
+
+        <div class = "contents">
+            <div class = "box">
+                <div class = "rate_box">
+                    White Win Rate
+                    <div class = "rate white_rate">
+                        {{white}}%
+                    </div>
+                </div>
+
+                <div class = "rate_box">
+                    White Recommend
+                    <div class style = "height:120px;margin-top: 10px;">
+                        <div class = "rec">
+                            <div class = "rec_not w1n">
+                                {{wrn.0}}
+                            </div>
+                            <div class = "rec_rate w1r">
+                                {{wrr.0}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not w2n">
+                                {{wrn.1}}
+                            </div>
+                            <div class = "rec_rate w2r">
+                                {{wrr.1}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not w3n">
+                                {{wrn.2}}
+                            </div>
+                            <div class = "rec_rate w3r">
+                                {{wrr.2}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class = "rate_box" style = "margin-top: 105px;">
+                    Most Cases
+                    <div class style = "height:120px;margin-top: 10px;">
+                        <div class = "rec">
+                            <div class = "rec_not mn1">
+                                {{mn.0}}
+                            </div>
+                            <div class = "rec_rate mr1">
+                                {{mr.0}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not mn2">
+                                {{mn.1}}
+                            </div>
+                            <div class = "rec_rate mr2">
+                                {{mr.1}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not mn3">
+                                {{mn.2}}
+                            </div>
+                            <div class = "rec_rate mr3">
+                                {{mr.2}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+            <div id = "board">
+
+            </div>
+
+            <div class = "box">
+                <div class = "rate_box">
+                    Black Win Rate
+                    <div class = "rate black_rate">
+                        {{black}}%
+                    </div>
+                </div>
+
+                <div class = "rate_box">
+                    Black Recommend
+                    <div style = "height:120px;margin-top: 10px;">
+                        <div class = "rec">
+                            <div class = "rec_not b1n">
+                                {{brn.0}}
+                            </div>
+                            <div class = "rec_rate b1r">
+                                {{brr.0}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not b2n">
+                                {{brn.1}}
+                            </div>
+                            <div class = "rec_rate b2r">
+                                {{brr.1}}
+                            </div>
+                        </div>
+                        <div class = "rec">
+                            <div class = "rec_not b3n">
+                                {{brn.2}}
+                            </div>
+                            <div class = "rec_rate b3r">
+                                {{brr.2}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <input type="button" value = "revert" class = "btn-light" onclick = "revert()" style = "position:relative; top:243px;"/>
+
+            </div>
+            
+
+        </div>
+
+                
+        
+
+        <script>
+        let rate = 0;
+        wP = "{% static 'images/wP.png' %}"; bP = "{% static 'images/bP.png' %}";
+        wR = "{% static 'images/wR.png' %}"; bR = "{% static 'images/bR.png' %}";
+        wN = "{% static 'images/wN.png' %}"; bN = "{% static 'images/bN.png' %}";
+        wB = "{% static 'images/wB.png' %}"; bB = "{% static 'images/bB.png' %}";
+        wQ = "{% static 'images/wQ.png' %}"; bQ = "{% static 'images/bQ.png' %}";
+        wK = "{% static 'images/wK.png' %}"; bK = "{% static 'images/bK.png' %}";
+
+        piece_dic = {"wp":wP, "bp":bP, "wR": wR, "bR":bR, "wN":wN, "bN":bN, "wB":wB, "bB":bB, "wQ":wQ, "bQ":bQ, "wK":wK, "bK":bK};
+
+
+        function getRate(nota, element, ismove){
+            $.ajax({
+                type : "POST",
+                url: "{% url 'ajax' %}",
+                data: {'nota': nota,'ismove': ismove, 'csrfmiddlewaretoken': '{{csrf_token}}'},
+                dataType: "json",
+                success: function(response){
+                    if (!ismove){//기물 눌렀을때 예상 승률
+                        rate = Math.round(response.win_rate * 100);
+                        element.rate = rate;
+                        updateBoard();
+                    }
+                    else{ //승률 눌렀을때 이동한 상태의 승률 판에 업데이트
+                        Wrate = (response.win_rate * 100).toFixed(2);
+                        Brate = (100-Wrate).toFixed(2);
+                        $(".current").html("Notation: " + nota + "<br>" + "Cases: " + response.cases);
+
+                        if(Wrate != 0){
+                            $(".white_rate").html(Wrate + "%");
+                            $(".black_rate").html(Brate + "%");
+
+                            $(".w1n").html(response.white_rn[0]); $(".w1r").html(response.white_rr[0]);
+                            $(".w2n").html(response.white_rn[1]); $(".w2r").html(response.white_rr[1]);
+                            $(".w3n").html(response.white_rn[2]); $(".w3r").html(response.white_rr[2]);
+
+                            $(".b1n").html(response.black_rn[0]); $(".b1r").html(response.black_rr[0]);
+                            $(".b2n").html(response.black_rn[1]); $(".b2r").html(response.black_rr[1]);
+                            $(".b3n").html(response.black_rn[2]); $(".b3r").html(response.black_rr[2]);
+
+                            $(".mn1").html(response.mn[0]); $(".mr1").html(response.mr[0]);
+                            $(".mn2").html(response.mn[1]); $(".mr2").html(response.mr[1]);
+                            $(".mn3").html(response.mn[2]); $(".mr3").html(response.mr[2]);
+                        }
+                    }
+                },
+                error: function(response){
+                    alert("fail");
+                }
+            })
+        }
+        </script>
+        
+        <script type = "text/javascript" src ="{% static 'js/chess.js' %}"></script>
+    </body>
+    
+</html>

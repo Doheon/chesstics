@@ -1,0 +1,118 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Chess Statistics</title>
+        <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+        <link rel="stylesheet" href="{% static 'css/index.css' %}">
+
+        <script type = "text/javascript" src ="{% static 'js/jquery.js' %}"></script>
+    </head>
+
+    
+
+    <body>
+        <div class = "header">
+            <div class = "home">
+                <a href="/" class = "home">Chesstics</a>   
+            </div>
+
+            <div class = "analysis">
+                <a href="/analysis">Analysis</a>
+            </div>
+            
+            <div class = "addData">
+                <a href="/add">Add Data</a>
+            </div>
+        </div>
+
+        <form  method = "POST" class="justify-content-center row mt-4 mb-2">{% csrf_token%}
+            <div class="col-sm-9">
+                <input type="text" name = "notation" class="form-control" placeholder="ex)d4 d5">
+            </div>
+            <div class="col-auto">
+                <button type = "submit" class="btn btn-dark mb-3">Search</button>
+            </div>
+        </form>
+
+
+
+        <div style = "width:1000px; margin:auto; margin-top: 50px;">
+            <div class = "mb-5" style = "font-size: x-large; font-weight: bold;">notation: {{notation}}</div>
+            
+            <div class = "my-3" style = "font-size: large; font-weight: bold;">Current State</div>
+            <table class="table table-secondary table-bordered">
+                <thead>
+                <tr>
+                    <th class = "col-md-3">Next Turn</th>
+                    <th class = "col-md-3">Cases</th>
+                    <th class = "col-md-3">White Win Rate</th>
+                    <th class = "col-md-3">Black Win Rate</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>{{next_turn}}</td>
+                    <td>{{cases}} / {{allCount}}</td>
+                    <td>{{white_win_rate}}%</td>
+                    <td>{{black_win_rate}}%</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class = "mt-5 mb-3" style = "font-size: large; font-weight: bold;">Next Actions by Winning Rate</div>
+            <table class="table table-secondary table-bordered">
+                <tbody>
+                <tr>
+                    <th class = "col-md-2">Next</th>
+                    <td class = "col-md-2">{{rn.0}}</td>
+                    <td class = "col-md-2">{{rn.1}}</td>
+                    <td class = "col-md-2">{{rn.2}}</td>
+                    <td class = "col-md-2">{{rn.3}}</td>
+                    <td class = "col-md-2">{{rn.4}}</td>
+
+                </tr>
+                </tbody>
+                
+                <tbody>
+                <tr>
+                    <th>Win Rate</th>
+                    <td>{{rr.0}}</td>
+                    <td>{{rr.1}}</td>
+                    <td>{{rr.2}}</td>
+                    <td>{{rr.3}}</td>
+                    <td>{{rr.4}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div class = "mt-5 mb-3" style = "font-size: large; font-weight: bold;">Next Actions by Frequency</div>
+            <table class="table table-secondary table-bordered">
+                <tbody>
+                <tr>
+                    <th class = "col-md-2">Next</th>
+                    <td class = "col-md-2">{{mn.0}}</td>
+                    <td class = "col-md-2">{{mn.1}}</td>
+                    <td class = "col-md-2">{{mn.2}}</td>
+                    <td class = "col-md-2">{{mn.3}}</td>
+                    <td class = "col-md-2">{{mn.4}}</td>
+
+                </tr>
+                </tbody>
+                
+                <tbody>
+                <tr>
+                    <th>Frequency</th>
+                    <td>{{mr.0}}</td>
+                    <td>{{mr.1}}</td>
+                    <td>{{mr.2}}</td>
+                    <td>{{mr.3}}</td>
+                    <td>{{mr.4}}</td>
+                </tr>
+                </tbody>
+            </table>
+
+          </div>
+
+    </body>
+</html>

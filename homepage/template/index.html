@@ -195,19 +195,19 @@
                         updateBoard();
                     }
                     else{ //승률 눌렀을때 이동한 상태의 승률 판에 업데이트
-                        Wrate = (response.win_rate * 100).toFixed(2);
-                        Brate = (100-Wrate).toFixed(2);
+                        Wrate = str((response.win_rate * 100).toFixed(2)) + "%";
+                        Brate = str((100-Wrate).toFixed(2)) + "%";
 
                         if (response.win_rate == "n"){
                             Wrate = "no data";
                             Brate = "no data";
                         }
-                        
+
                         $(".current").html("Notation: " + nota + "<br>" + "Cases: " + response.cases);
 
                         if(Wrate != 0){
-                            $(".white_rate").html(Wrate + "%");
-                            $(".black_rate").html(Brate + "%");
+                            $(".white_rate").html(Wrate);
+                            $(".black_rate").html(Brate);
 
                             $(".w1n").html(response.white_rn[0]); $(".w1r").html(response.white_rr[0]);
                             $(".w2n").html(response.white_rn[1]); $(".w2r").html(response.white_rr[1]);

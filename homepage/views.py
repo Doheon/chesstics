@@ -162,7 +162,7 @@ def search(request, notation = ""):
     white_win_rate = round(ans[0] *100,2)
     black_win_rate = round(100 - ans[0] *100,2)
 
-    rec, most = nextMove(notation, 0)
+    rec, most = nextMove(notation, 1)
     mn = [i[0] for i in most]
     mr = [i[1] for i in most]
     wrn,wrr,brn,brr = recommend(rec)

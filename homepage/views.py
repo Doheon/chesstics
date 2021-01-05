@@ -159,8 +159,12 @@ def search(request, notation = ""):
         next_turn = "White"
 
     ans = whiteWin(notation)
-    white_win_rate = round(ans[0] *100,2)
-    black_win_rate = round(100 - ans[0] *100,2)
+    if ans[1]:
+        white_win_rate = round(ans[0] *100,2)
+        black_win_rate = round(100 - ans[0] *100,2)
+    else:
+        white_win_rate = "no data"
+        black_win_rate = "no data"
 
     rec, most = nextMove(notation, 1)
     mn = [i[0] for i in most]

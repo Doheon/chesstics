@@ -197,6 +197,12 @@
                     else{ //승률 눌렀을때 이동한 상태의 승률 판에 업데이트
                         Wrate = (response.win_rate * 100).toFixed(2);
                         Brate = (100-Wrate).toFixed(2);
+
+                        if (response.win_rate == "n"){
+                            Wrate = "no data";
+                            Brate = "no data";
+                        }
+                        
                         $(".current").html("Notation: " + nota + "<br>" + "Cases: " + response.cases);
 
                         if(Wrate != 0){

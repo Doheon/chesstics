@@ -21,7 +21,7 @@ function makeBoard(){
         for(var y = 0; y < 9; y++){
             var cell = {};
             cell.element = document.createElement("div");
-            cell.color = "n";cell.piece = "n";cell.state = "n";cell.rate = 0;
+            cell.color = "n";cell.piece = "n";cell.state = "n";cell.rate = "n";
             cell.name = String.fromCharCode(y+96) + x
             const cx = x, cy = y;
             cell.element.onclick = function(){clickBoard(cx, cy)};
@@ -173,13 +173,13 @@ function removeList(){
         v.state = "n";
         v.color = "n";
         v.piece = "n";
-        v.rate = 0;
+        v.rate = "n";
     }
 
     while (take_list.length>0){
         var v = take_list.pop();
         v.state = "cur";
-        v.rate = 0;
+        v.rate = "n";
     }
 }
 
@@ -205,7 +205,7 @@ function updateBoard(){
                 if (cell.state == "move") cell.element.style.color = "rgb(36, 67, 169)";
                 else if (cell.state == "take") cell.element.style.color = "rgb(191, 39, 22)";
 
-                if(cell.rate == 0){
+                if(cell.rate == "n"){
                     cell.element.innerHTML = "no data";
                     cell.element.style.fontSize = "medium"
                 }

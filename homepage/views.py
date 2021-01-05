@@ -81,7 +81,7 @@ def whiteWin(notation):
     win_rate = df2["white_win"].mean()
     count = df2["white_win"].count()
     if count == 0:
-        return (0,0)
+        return ("n",0)
     return (win_rate, count)
 
 #승률이 높은 순서로 7개의 수를 반환

@@ -7,6 +7,7 @@ from .models import Chess
 import pandas as pd
 import simplejson as json
 
+
 df = pd.DataFrame(list(Chess.objects.all().values()))
 # +, # 없애줌
 moves = df['moves'].str.split(" ")
@@ -64,7 +65,7 @@ def nextMove(notation, count):
     grouped_key = grouped_count["white_win"].keys()
     l = len(grouped_count)
     most = []
-    for i in range(5):
+    for i in range(7):
         if i<l :
             most.append([grouped_key[i], str(round(grouped_count["white_win"][grouped_key[i]]/countSum * 100,2)) + "%"])
         else:
@@ -83,12 +84,12 @@ def whiteWin(notation):
         return (0,0)
     return (win_rate, count)
 
-#승률이 높은 순서로 5개의 수를 반환
+#승률이 높은 순서로 7개의 수를 반환
 def recommend(next_move):
     l = len(next_move)
     white_rn = []; white_rr = []; black_rn = []; black_rr = []
 
-    for i in range(5):
+    for i in range(7):
         if i<l and next_move[i][0]:
             white_rn.append(next_move[i][0])
             white_rr.append(str(round(next_move[i][1]*100,2)) + "%")
@@ -173,12 +174,29 @@ def search(request, notation = ""):
     return render(request, 'search.html', {"white_win_rate":white_win_rate, "black_win_rate":black_win_rate,"cases": ans[1], "next_turn": next_turn, "notation": notation, "allCount":allCount, "rn":rn, "rr":rr, "mn": mn, "mr":mr})
 
 
-def analysis(request):
+def analysis(request, num=0):
     if request.method == "POST":
         notation = request.POST.get("notation","")
         return redirect('/search/' + notation)
 
-    return render(request, 'analysis.html',{})
+    rec, most = nextMove("",100)
+    mn = [i[0] for i in most]
+
+    if num:
+        src = 'analysis' + str(num) + ".html" 
+        n = mn[num-1]
+        x,y = nextMove(n, 100)
+        mbn = [i[0] for i in y]
+        mbr = [i[1] for i in y]
+        mbwr = [str(round(100 - whiteWin(n +" "+ i[0])[0]*100,2)) + "%" for i in y]
+        return render(request, src, {"mn": mn, "mbn": mbn, "mbr": mbr, "mbwr":mbwr})
+        
+    else :
+        src = "analysis.html"
+        mr = [i[1] for i in most]
+        mwr = [str(round(whiteWin(i[0])[0] * 100,2)) + "%" for i in most]
+        return render(request, src, {"mn": mn, "mr":mr, "mwr":mwr})
+
 
 def add(request):    
     if request.method == "POST":

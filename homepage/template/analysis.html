@@ -24,6 +24,10 @@
             <div class = "addData">
                 <a href="/add">Add Data</a>
             </div>
+
+            <div class = "addData" style="width:200px">
+                <a href="https://en.wikipedia.org/wiki/Algebraic_notation_(chess)">What is notation?</a>
+            </div>
         </div>
 
         <form  method = "POST" class="justify-content-center row mt-4 mb-2">{% csrf_token%}
@@ -35,25 +39,48 @@
             </div>
         </form>
 
-        <div style = "width: 500px; margin:auto; margin-top: 100px;">
+        <div style = "width: 600px; margin:auto; margin-top: 100px;">
             <ul class="nav nav-tabs">
                 <li class="nav-item">
-                <a class="nav-link active" href="#">Active</a>
+                <a class="nav-link active" href="">white</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="/analysis/1">{{mn.0}}</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="/analysis/2">{{mn.1}}</a>
                 </li>
                 <li class="nav-item">
-                <a class="nav-link" href="#">Disabled</a>
+                <a class="nav-link" href="/analysis/3">{{mn.2}}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Disabled</a>
+                <a class="nav-link" href="/analysis/4">{{mn.3}}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/analysis/5">{{mn.4}}</a>
                 </li>
             </ul>
-            asdf
+            <table class="h-75 table table-secondary table-bordered">
+                <tbody>
+                    <tr>
+                        <th class = "col-md-2">Next Move</th>
+                        <th class = "col-md-3">Frequency</th>
+                        <th class = "col-md-3">Winning Rate</th>
+                    </tr>
+                    {% for x in mn %}
+                    {% with forloop.counter|cut:" " as index%}
+                    <tr>
+                        <td>{{x}}</td>
+                        <td>{{mr|slice:index|last}}</td>
+                        <td>{{mwr|slice:index|last}}</td>
+                    </tr>
+                    {% endwith %}
+                    {% endfor %}
+
+                </tbody>
+            </table>
+
+
             
         </div>
 

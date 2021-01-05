@@ -168,10 +168,21 @@ a:hover{
     font-size:medium;
 }
 
-.test{
-    width: 200px;
-    height: 200px;
-    float:left;
-    color:rgb(36, 67, 169);
+.nav-tabs{
+    background-color:rgb(188, 225, 199);
+ 
+}
+.nav-link{
+    color: grey;
+}
+
+.nav-tabs > li > a{
+border: medium none;
+}
+.nav-tabs > li > a:hover{
+background-color: #303136 !important;
+    border: medium none;
+    border-radius: 0;
+    color:#fff;
 }
 

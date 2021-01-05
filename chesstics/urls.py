@@ -29,5 +29,6 @@ urlpatterns = [
     path('search/<str:notation>', search),
     path('search/', search),
     path('analysis/', analysis),
+    path('analysis/<int:num>', analysis),
     path('add/', add),
 ]

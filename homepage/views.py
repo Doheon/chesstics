@@ -106,8 +106,6 @@ def recommend(next_move):
 
     return (white_rn, white_rr, black_rn, black_rr)
 
-
-
 def index(request):
     if request.method == "POST":
         notation = request.POST.get("notation","")
